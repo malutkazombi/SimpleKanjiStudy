@@ -1,4 +1,5 @@
 # SimpleKanjiStudy 🇯🇵📱
+**WIP (Work In Progress)** — This project is currently under development. Please check back later for updates!
 
 A simple Android app to study Japanese kanji (N5–N1 levels) using flashcards.
 
