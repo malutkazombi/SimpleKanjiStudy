@@ -39,13 +39,13 @@ fun KanjiStudyScreen(modifier: Modifier = Modifier) {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 listOf("N5", "N4", "N3", "N2", "N1").forEach { level ->
                     Button(onClick = { selectedLevel = level }) {
-                        Text("Уровень $level")
+                        Text("Level $level")
                     }
                 }
             }
         } else {
             Button(onClick = { selectedLevel = null }) {
-                Text("← Назад к выбору уровня")
+                Text("← Back to level selection")
             }
             Spacer(modifier = Modifier.height(16.dp))
             KanjiList(KanjiRepository.allKanji[selectedLevel] ?: emptyList())
@@ -65,6 +65,7 @@ fun KanjiList(kanjiList: List<KanjiCard>) {
 
 @Composable
 fun KanjiCardView(card: KanjiCard) {
+    var selectedOption by remember { mutableStateOf<String?>(null) }
     var isRevealed by remember { mutableStateOf(false) }
 
     Card(
@@ -83,36 +84,33 @@ fun KanjiCardView(card: KanjiCard) {
             Text(text = card.kanji, style = MaterialTheme.typography.headlineLarge)
             Spacer(modifier = Modifier.height(8.dp))
 
-            if (!isRevealed) {
-                Button(
-                    onClick = { isRevealed = true },
-                    modifier = Modifier.size(width = 150.dp, height = 50.dp)
-                ) {
-                    Text("Показать перевод")
-                }
-            } else {
-                Text(text = card.meaning, style = MaterialTheme.typography.bodyMedium)
-                Spacer(modifier = Modifier.height(8.dp))
-
+            if (selectedOption == null) {
+                // Show options to select knowledge
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Button(onClick = { /* Знаю */ }) {
-                        Text("Знаю")
+                    Button(onClick = { selectedOption = "I know"; isRevealed = true }) {
+                        Text("I know")
                     }
-                    Button(onClick = { /* Сомневаюсь */ }) {
-                        Text("Сомневаюсь")
+                    Button(onClick = { selectedOption = "I'm unsure"; isRevealed = true }) {
+                        Text("I'm unsure")
                     }
-                    Button(onClick = { /* Не знаю */ }) {
-                        Text("Не знаю")
+                    Button(onClick = { selectedOption = "I don't know"; isRevealed = true }) {
+                        Text("I don't know")
                     }
                 }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Reveal the meaning after selection
+            if (isRevealed) {
+                Text(text = card.meaning, style = MaterialTheme.typography.bodyMedium)
             }
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
