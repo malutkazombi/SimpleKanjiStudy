@@ -18,6 +18,6 @@ object KanjiRepository {
             KanjiCard("情", "Emotion", "N3")
         ),
         "N2" to emptyList(), // Пока пусто
-        "N1" to emptyList()  // Пока пусто
+        "N1" to emptyList()
     )
 }
